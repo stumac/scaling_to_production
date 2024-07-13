@@ -94,7 +94,8 @@ class DataManager():
                 yr_dd = (dd
                          .from_pandas(ticker_dt[ticker_dt.year == yr], npartitions=1)
                          .set_index('ticker'))
-                yr_path = os.path.join(outpath, ticker, f"{ticker}_{yr}.parquet")
+                # yr_path = os.path.join(outpath, ticker, f"{ticker}_{yr}.parquet")
+                yr_path = os.path.join(outpath, ticker, f"{ticker}_{yr}")
                 yr_dd.to_parquet(yr_path, overwrite = True)
         else:
             _logs.warning(f'No data found for {ticker}')
@@ -106,7 +107,8 @@ class DataManager():
         '''
 
         _logs.info(f'Getting stock price data for {ticker} from {start_date} to {end_date}')
-        stock_data = yf.download(ticker, start=start_date, end=end_date)
+        stock_data = yf.download(ticker, start=start_date, end=end_date, auto_adjust=False)
+        _logs.info(f"stock data: {stock_data}")
         return stock_data
 
 
